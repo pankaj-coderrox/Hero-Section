@@ -1,0 +1,13 @@
+.next/
+.next-*/
+node_modules/
+.pnpm-store/
+out/
+dist/
+build/
+
+.DS_Store
+*.log
+
+public/desktop-verify.png
+public/mobile-verify.png
