@@ -171,30 +171,30 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.42, duration: 0.55 }}
-            className="mt-7 flex flex-wrap items-center gap-3 sm:flex-nowrap sm:gap-5 lg:mt-9 lg:gap-7 xl:mt-11"
+            className="mt-7 flex flex-wrap items-center gap-3 sm:flex-nowrap sm:gap-5 lg:mt-6 lg:gap-5 xl:mt-8"
           >
-            <div className="flex h-11 w-[124px] items-center justify-between rounded-[15px] border-2 border-[var(--active)] bg-white/35 px-3 shadow-sm sm:h-12 sm:w-[136px] lg:h-[56px] lg:w-[188px] lg:rounded-[18px] lg:border-[3px] lg:px-4 xl:h-[62px] xl:w-[220px] xl:rounded-[20px] xl:px-5">
+            <div className="flex h-11 w-[124px] items-center justify-between rounded-[15px] border-2 border-[var(--active)] bg-white/35 px-3 shadow-sm sm:h-12 sm:w-[136px] lg:h-[48px] lg:w-[158px] lg:rounded-[16px] lg:border-[3px] lg:px-3 xl:h-[52px] xl:w-[176px] xl:rounded-[17px] xl:px-3.5">
               <button
                 aria-label="Decrease quantity"
                 onClick={() => setQuantity((value) => Math.max(1, value - 1))}
-                className="grid size-7 place-items-center rounded-full bg-white text-ink shadow-[0_10px_24px_rgba(21,46,33,0.08)] transition hover:-translate-y-0.5 lg:size-8 xl:size-9"
+                className="grid size-7 place-items-center rounded-full bg-white text-ink shadow-[0_10px_24px_rgba(21,46,33,0.08)] transition hover:-translate-y-0.5 lg:size-7 xl:size-8"
               >
                 <Minus className="size-4" strokeWidth={3} />
               </button>
-              <span className="min-w-7 text-center text-sm font-black tabular-nums lg:min-w-8 lg:text-lg xl:min-w-9 xl:text-xl">
+              <span className="min-w-7 text-center text-sm font-black tabular-nums lg:min-w-8 lg:text-base xl:min-w-8 xl:text-lg">
                 {String(quantity).padStart(2, "0")}
               </span>
               <button
                 aria-label="Increase quantity"
                 onClick={() => setQuantity((value) => Math.min(9, value + 1))}
-                className="grid size-7 place-items-center rounded-full bg-white text-ink shadow-[0_10px_24px_rgba(21,46,33,0.08)] transition hover:-translate-y-0.5 lg:size-8 xl:size-9"
+                className="grid size-7 place-items-center rounded-full bg-white text-ink shadow-[0_10px_24px_rgba(21,46,33,0.08)] transition hover:-translate-y-0.5 lg:size-7 xl:size-8"
               >
                 <Plus className="size-4" strokeWidth={3} />
               </button>
             </div>
-            <button className="group flex h-11 items-center gap-2.5 whitespace-nowrap rounded-[15px] bg-[var(--active)] px-5 text-sm font-black text-white shadow-[0_18px_34px_color-mix(in_srgb,var(--active)_30%,transparent)] transition hover:-translate-y-1 sm:h-12 sm:gap-3 lg:h-[56px] lg:gap-3 lg:rounded-[18px] lg:px-8 lg:text-base xl:h-[62px] xl:gap-4 xl:rounded-[20px] xl:px-9 xl:text-lg">
+            <button className="group flex h-11 items-center gap-2.5 whitespace-nowrap rounded-[15px] bg-[var(--active)] px-5 text-sm font-black text-white shadow-[0_18px_34px_color-mix(in_srgb,var(--active)_30%,transparent)] transition hover:-translate-y-1 sm:h-12 sm:gap-3 lg:h-[48px] lg:gap-2.5 lg:rounded-[16px] lg:px-7 lg:text-[15px] xl:h-[52px] xl:gap-3 xl:rounded-[17px] xl:px-8 xl:text-base">
               Order Now
-              <ArrowRight className="size-5 transition group-hover:translate-x-1 lg:size-6" strokeWidth={3} />
+              <ArrowRight className="size-5 transition group-hover:translate-x-1 lg:size-5 xl:size-6" strokeWidth={3} />
             </button>
           </motion.div>
         </div>
@@ -318,7 +318,7 @@ export function HeroSection() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.58, duration: 0.6 }}
-        className="relative z-30 mx-auto mt-20 grid w-full max-w-[500px] grid-cols-3 gap-3 pb-10 sm:mt-10 sm:gap-4 md:absolute md:bottom-[-96px] md:left-14 md:mt-0 md:max-w-[480px] md:pb-0 lg:bottom-[-120px] lg:left-[5.6%] lg:max-w-[470px] lg:gap-5 xl:bottom-[-100px] xl:max-w-[560px]"
+        className="relative z-30 mx-auto mt-20 grid w-full max-w-[500px] grid-cols-3 gap-3 pb-10 sm:mt-10 sm:gap-4 md:absolute md:bottom-[-130px] md:left-14 md:mt-0 md:max-w-[480px] md:pb-0 lg:bottom-[-175px] lg:left-[5.6%] lg:max-w-[470px] lg:gap-5 xl:bottom-[-155px] xl:max-w-[560px]"
       >
         {products.map((product, index) => {
           const isActive = index === activeIndex;
@@ -352,12 +352,12 @@ export function HeroSection() {
                 height={270}
                 className={`absolute left-1/2 w-auto -translate-x-1/2 object-contain drop-shadow-[0_18px_16px_rgba(0,45,28,0.24)] transition duration-500 ease-out group-hover:scale-105 ${
                   isActive
-                    ? "bottom-5 h-[132%] sm:bottom-8 sm:h-[150%] md:bottom-9 lg:bottom-8 lg:h-[180%] xl:bottom-9 xl:h-[178%]"
-                    : "bottom-4 h-[112%] sm:bottom-6 sm:h-[126%] md:bottom-7 lg:bottom-7 lg:h-[150%] xl:bottom-8 xl:h-[148%]"
+                    ? "bottom-5 h-[132%] sm:bottom-8 sm:h-[150%] md:bottom-9 lg:bottom-8 lg:h-[148%] xl:bottom-9 xl:h-[150%]"
+                    : "bottom-4 h-[112%] sm:bottom-6 sm:h-[126%] md:bottom-7 lg:bottom-7 lg:h-[124%] xl:bottom-8 xl:h-[126%]"
                 }`}
               />
-              <BrandBadge className="absolute left-1/2 top-[38%] size-7 -translate-x-1/2 text-[8px] sm:top-[42%] sm:size-8 sm:text-[9px] md:top-[44%] md:size-9 lg:top-[51%] lg:size-9 lg:text-[9px] xl:top-[52%] xl:size-10 xl:text-[10px]" />
-              <span className="absolute bottom-1.5 left-1 right-1 z-10 text-center text-[9px] font-black leading-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.35)] sm:bottom-2 sm:left-2 sm:right-2 sm:text-[11px] md:text-xs lg:bottom-3 lg:text-sm xl:bottom-4 xl:text-base">
+              <BrandBadge className="absolute left-1/2 top-[38%] size-7 -translate-x-1/2 text-[8px] sm:top-[42%] sm:size-8 sm:text-[9px] md:top-[44%] md:size-9 lg:top-[42%] lg:size-8 lg:text-[8px] xl:top-[43%] xl:size-9 xl:text-[9px]" />
+              <span className="absolute bottom-1.5 left-1 right-1 z-10 text-center text-[9px] font-black leading-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.35)] sm:bottom-2 sm:left-2 sm:right-2 sm:text-[11px] md:text-xs lg:bottom-2 lg:text-sm xl:bottom-3 xl:text-base">
                 {product.name}
               </span>
               <span className="sr-only">Select {product.name}</span>
