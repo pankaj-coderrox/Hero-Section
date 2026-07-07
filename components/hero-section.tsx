@@ -60,7 +60,7 @@ export function HeroSection() {
     }
     requestAnimationFrame(() => {
       setCupPopping(true);
-      cupPopTimer.current = setTimeout(() => setCupPopping(false), 920);
+      cupPopTimer.current = setTimeout(() => setCupPopping(false), 760);
     });
   };
 
@@ -221,41 +221,29 @@ export function HeroSection() {
                 role="button"
                 tabIndex={0}
                 aria-label={`Pop ${active.name} product image`}
-                className="relative h-full w-full cursor-pointer outline-none focus-visible:ring-4 focus-visible:ring-white/70"
+                className="relative h-full w-full cursor-pointer outline-none"
                 onClick={triggerCupPop}
                 onPointerDown={triggerCupPop}
                 onKeyDown={handleCupKeyDown}
                 animate={
                   cupPopping
                     ? {
-                        y: [0, -245, -168, 0],
-                        scale: [1, 1.42, 1.26, 1],
-                        rotate: [0, -4, 2, 0],
+                        y: [0, -72, -38, 0],
+                        scale: [1, 1.16, 1.08, 1],
+                        rotate: [0, -1.6, 0.8, 0],
                         filter: [
                           "drop-shadow(0 46px 48px rgba(0,61,38,0.34))",
-                          "drop-shadow(0 96px 90px rgba(0,61,38,0.46))",
-                          "drop-shadow(0 76px 66px rgba(0,61,38,0.42))",
+                          "drop-shadow(0 66px 62px rgba(0,61,38,0.42))",
+                          "drop-shadow(0 54px 54px rgba(0,61,38,0.38))",
                           "drop-shadow(0 46px 48px rgba(0,61,38,0.34))"
                         ]
                       }
                     : { y: 0, scale: 1, rotate: 0 }
                 }
                 whileHover={{ scale: 1.035 }}
-                whileTap={{ scale: 1.22, y: -150 }}
-                transition={{ duration: 0.92, ease: [0.2, 0.9, 0.22, 1] }}
+                whileTap={{ scale: 1.1, y: -34 }}
+                transition={{ duration: 0.76, ease: [0.22, 1, 0.36, 1] }}
               >
-                <AnimatePresence>
-                  {cupPopping ? (
-                    <motion.span
-                      aria-hidden="true"
-                      className="absolute left-1/2 top-1/2 z-0 h-[62%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white/70 bg-white/20"
-                      initial={{ opacity: 0.55, scale: 0.45 }}
-                      animate={{ opacity: 0, scale: 1.35 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.62, ease: "easeOut" }}
-                    />
-                  ) : null}
-                </AnimatePresence>
                 <motion.div
                   className="relative z-10 h-full w-full"
                   initial={{ opacity: 0, y: 80, rotate: -3, scale: 0.9 }}
