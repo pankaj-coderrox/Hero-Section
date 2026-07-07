@@ -356,8 +356,8 @@ export function HeroSection() {
                     : "bottom-4 h-[112%] sm:bottom-6 sm:h-[126%] md:bottom-7 lg:bottom-7 lg:h-[150%] xl:bottom-8 xl:h-[148%]"
                 }`}
               />
-              <BrandBadge className="absolute left-1/2 top-[38%] size-7 -translate-x-1/2 text-[8px] sm:top-[42%] sm:size-8 sm:text-[9px] md:top-[44%] md:size-9 lg:top-[51%] lg:size-9 lg:text-[9px] xl:top-[52%] xl:size-10 xl:text-[10px]" />
-              <span className="absolute bottom-1.5 left-1 right-1 z-10 text-center text-[9px] font-black leading-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.35)] sm:bottom-2 sm:left-2 sm:right-2 sm:text-[11px] md:text-xs lg:bottom-3 lg:text-sm xl:bottom-4 xl:text-base">
+              <BrandBadge className="absolute left-1/2 top-[47%] size-5 -translate-x-1/2 text-[6px] sm:top-[49%] sm:size-6 sm:text-[7px] md:top-[50%] md:size-7 lg:top-[49%] lg:size-7 lg:text-[7px] xl:top-[50%] xl:size-8 xl:text-[8px]" />
+              <span className="absolute bottom-1.5 left-1 right-1 z-10 text-center text-[9px] font-black leading-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.35)] sm:bottom-2 sm:left-2 sm:right-2 sm:text-[11px] md:text-xs lg:bottom-2 lg:text-sm xl:bottom-3 xl:text-base">
                 {product.name}
               </span>
               <span className="sr-only">Select {product.name}</span>
