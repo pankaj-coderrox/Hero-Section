@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Minus, Plus, Search, ShoppingBag, ArrowRight } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
 import { products } from "@/data/products";
 
 const navItems = ["Home", "Shop", "Rewards", "About", "Contact"];
@@ -33,6 +34,8 @@ export function HeroSection() {
   const [activeIndex, setActiveIndex] = useState(2);
   const [quantity, setQuantity] = useState(2);
   const [scrolled, setScrolled] = useState(false);
+  const [cupPopping, setCupPopping] = useState(false);
+  const cupPopTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const active = products[activeIndex];
 
   useEffect(() => {
@@ -41,6 +44,32 @@ export function HeroSection() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (cupPopTimer.current) {
+        clearTimeout(cupPopTimer.current);
+      }
+    };
+  }, []);
+
+  const triggerCupPop = () => {
+    setCupPopping(false);
+    if (cupPopTimer.current) {
+      clearTimeout(cupPopTimer.current);
+    }
+    requestAnimationFrame(() => {
+      setCupPopping(true);
+      cupPopTimer.current = setTimeout(() => setCupPopping(false), 920);
+    });
+  };
+
+  const handleCupKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      triggerCupPop();
+    }
+  };
 
   const beans = useMemo(
     () => [
@@ -55,11 +84,11 @@ export function HeroSection() {
 
   return (
     <main
-      className="relative min-h-screen overflow-hidden rounded-[0_0_42px_42px] bg-cream px-5 text-ink sm:px-8 lg:h-screen lg:min-h-[640px] lg:px-12 xl:px-16 2xl:px-20"
+      className="relative min-h-screen overflow-x-hidden overflow-y-visible rounded-[0_0_42px_42px] bg-cream px-5 text-ink sm:px-8 lg:h-screen lg:min-h-[640px] lg:px-12 xl:px-16 2xl:px-20"
       style={{ "--active": active.accent } as React.CSSProperties}
     >
       <motion.header
-        className={`absolute left-0 right-0 top-0 z-50 mx-auto flex w-full items-center justify-between px-6 py-5 transition-all duration-300 sm:px-8 md:fixed lg:px-12 lg:py-10 xl:px-16 xl:py-11 2xl:px-20 ${
+        className={`absolute left-0 right-0 top-0 z-50 mx-auto flex w-full items-center justify-between px-6 py-5 transition-all duration-300 sm:px-8 lg:px-12 lg:py-10 xl:px-16 xl:py-11 2xl:px-20 ${
           scrolled ? "bg-cream/72 shadow-[0_14px_42px_rgba(16,45,31,0.08)]" : "bg-transparent"
         }`}
       >
@@ -110,7 +139,7 @@ export function HeroSection() {
       </motion.header>
 
       <section className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1880px] grid-cols-1 items-start gap-0 pb-9 pt-20 md:pt-28 lg:grid-cols-[46%_54%] lg:items-center lg:gap-8 lg:pb-0 lg:pt-24">
-        <div className="relative z-20 order-2 mt-2 max-w-[760px] sm:mt-0 lg:order-1 lg:mt-0 lg:-translate-y-28 xl:-translate-y-24 xl:pl-2">
+        <div className="relative z-20 order-2 mt-2 max-w-[760px] sm:mt-0 lg:order-1 lg:mt-0 lg:-translate-y-16 xl:-translate-y-28 xl:pl-2">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -189,27 +218,67 @@ export function HeroSection() {
               className="absolute left-1/2 top-[117px] z-20 h-[430px] w-[82vw] max-w-[420px] -translate-x-1/2 sm:top-[103px] lg:bottom-[-2%] lg:left-auto lg:right-[-3%] lg:top-auto lg:h-[90vh] lg:min-h-[660px] lg:w-[52vw] lg:min-w-[590px] lg:max-w-[880px] lg:translate-x-0 xl:bottom-[-4%] xl:right-[1%] xl:min-h-[720px] xl:max-w-[960px]"
             >
               <motion.div
-                className="relative h-full w-full"
-                initial={{ opacity: 0, y: 80, rotate: -3, scale: 0.9 }}
-                animate={{ opacity: 1, y: [0, -16, 0], rotate: [0, 1.2, -0.9, 0.6, 0], x: [0, 3, -2, 2, 0], scale: 1 }}
-                exit={{ opacity: 0, y: 42, scale: 0.92, transition: { duration: 0.25 } }}
-                transition={{
-                  opacity: { duration: 0.45 },
-                  y: { duration: 5.8, repeat: Infinity, ease: "easeInOut" },
-                  x: { duration: 6.4, repeat: Infinity, ease: "easeInOut" },
-                  rotate: { duration: 6.4, repeat: Infinity, ease: "easeInOut" },
-                  scale: { duration: 0.7 }
-                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`Pop ${active.name} product image`}
+                className="relative h-full w-full cursor-pointer outline-none focus-visible:ring-4 focus-visible:ring-white/70"
+                onClick={triggerCupPop}
+                onPointerDown={triggerCupPop}
+                onKeyDown={handleCupKeyDown}
+                animate={
+                  cupPopping
+                    ? {
+                        y: [0, -245, -168, 0],
+                        scale: [1, 1.42, 1.26, 1],
+                        rotate: [0, -4, 2, 0],
+                        filter: [
+                          "drop-shadow(0 46px 48px rgba(0,61,38,0.34))",
+                          "drop-shadow(0 96px 90px rgba(0,61,38,0.46))",
+                          "drop-shadow(0 76px 66px rgba(0,61,38,0.42))",
+                          "drop-shadow(0 46px 48px rgba(0,61,38,0.34))"
+                        ]
+                      }
+                    : { y: 0, scale: 1, rotate: 0 }
+                }
+                whileHover={{ scale: 1.035 }}
+                whileTap={{ scale: 1.22, y: -150 }}
+                transition={{ duration: 0.92, ease: [0.2, 0.9, 0.22, 1] }}
               >
-                <Image
-                  src={active.image}
-                  alt={`${active.name} product image`}
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 48vw, 84vw"
-                  className="object-contain drop-shadow-[0_46px_48px_rgba(0,61,38,0.34)]"
-                />
-                <BrandBadge className="absolute left-1/2 top-[58%] grid size-16 -translate-x-1/2 text-xl sm:size-20 sm:text-2xl lg:top-[57%] lg:size-24 lg:text-3xl xl:size-28 xl:text-4xl" />
+                <AnimatePresence>
+                  {cupPopping ? (
+                    <motion.span
+                      aria-hidden="true"
+                      className="absolute left-1/2 top-1/2 z-0 h-[62%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white/70 bg-white/20"
+                      initial={{ opacity: 0.55, scale: 0.45 }}
+                      animate={{ opacity: 0, scale: 1.35 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.62, ease: "easeOut" }}
+                    />
+                  ) : null}
+                </AnimatePresence>
+                <motion.div
+                  className="relative z-10 h-full w-full"
+                  initial={{ opacity: 0, y: 80, rotate: -3, scale: 0.9 }}
+                  animate={{ opacity: 1, y: [0, -16, 0], rotate: [0, 1.2, -0.9, 0.6, 0], x: [0, 3, -2, 2, 0], scale: 1 }}
+                  exit={{ opacity: 0, y: 42, scale: 0.92, transition: { duration: 0.25 } }}
+                  transition={{
+                    opacity: { duration: 0.45 },
+                    y: { duration: 5.8, repeat: Infinity, ease: "easeInOut" },
+                    x: { duration: 6.4, repeat: Infinity, ease: "easeInOut" },
+                    rotate: { duration: 6.4, repeat: Infinity, ease: "easeInOut" },
+                    scale: { duration: 0.7 }
+                  }}
+                >
+                  <Image
+                    src={active.image}
+                    alt={`${active.name} product image`}
+                    fill
+                    priority
+                    sizes="(min-width: 1024px) 48vw, 84vw"
+                    className="object-contain drop-shadow-[0_46px_48px_rgba(0,61,38,0.34)]"
+                  />
+                  <BrandBadge className="absolute left-1/2 top-[58%] grid size-16 -translate-x-1/2 text-xl sm:size-20 sm:text-2xl lg:top-[57%] lg:size-24 lg:text-3xl xl:size-28 xl:text-4xl" />
+                </motion.div>
               </motion.div>
             </div>
           </AnimatePresence>
@@ -249,7 +318,7 @@ export function HeroSection() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.58, duration: 0.6 }}
-        className="relative z-30 mx-auto mt-20 grid w-full max-w-[500px] grid-cols-3 gap-3 pb-10 sm:mt-10 sm:gap-4 md:absolute md:bottom-0 md:left-14 md:mt-0 md:max-w-[480px] md:pb-0 lg:left-[5.6%] lg:max-w-[460px] lg:gap-5 xl:max-w-[520px]"
+        className="relative z-30 mx-auto mt-20 grid w-full max-w-[500px] grid-cols-3 gap-3 pb-10 sm:mt-10 sm:gap-4 md:absolute md:bottom-[-96px] md:left-14 md:mt-0 md:max-w-[480px] md:pb-0 lg:bottom-[-120px] lg:left-[5.6%] lg:max-w-[470px] lg:gap-5 xl:bottom-[-100px] xl:max-w-[560px]"
       >
         {products.map((product, index) => {
           const isActive = index === activeIndex;
@@ -259,8 +328,8 @@ export function HeroSection() {
               type="button"
               onClick={() => setActiveIndex(index)}
               aria-pressed={isActive}
-              className={`group relative h-24 overflow-visible rounded-[20px_20px_0_0] bg-gradient-to-br ${product.tileClass} shadow-soft outline-none transition duration-500 ease-out hover:-translate-y-1.5 focus-visible:ring-2 focus-visible:ring-[var(--active)]/60 sm:h-28 md:h-32 lg:h-[92px] xl:h-[108px] ${
-                isActive ? "-translate-y-3 scale-[1.035] shadow-[0_30px_58px_rgba(31,36,30,0.24)]" : ""
+              className={`group relative h-24 overflow-visible rounded-[20px_20px_0_0] bg-gradient-to-br ${product.tileClass} shadow-soft outline-none transition duration-500 ease-out hover:-translate-y-1.5 focus-visible:ring-2 focus-visible:ring-[var(--active)]/60 sm:h-28 md:h-32 lg:h-[132px] xl:h-[148px] ${
+                isActive ? "shadow-[0_30px_58px_rgba(31,36,30,0.24)] md:scale-[1.02] lg:scale-100" : ""
               }`}
               style={{
                 boxShadow: isActive
@@ -283,12 +352,12 @@ export function HeroSection() {
                 height={270}
                 className={`absolute left-1/2 w-auto -translate-x-1/2 object-contain drop-shadow-[0_18px_16px_rgba(0,45,28,0.24)] transition duration-500 ease-out group-hover:scale-105 ${
                   isActive
-                    ? "bottom-5 h-[132%] sm:bottom-8 sm:h-[150%] md:bottom-9 lg:bottom-7 lg:h-[176%] xl:bottom-8 xl:h-[164%]"
-                    : "bottom-4 h-[112%] sm:bottom-6 sm:h-[126%] md:bottom-7 lg:bottom-5 lg:h-[142%] xl:bottom-6 xl:h-[136%]"
+                    ? "bottom-5 h-[132%] sm:bottom-8 sm:h-[150%] md:bottom-9 lg:bottom-8 lg:h-[180%] xl:bottom-9 xl:h-[178%]"
+                    : "bottom-4 h-[112%] sm:bottom-6 sm:h-[126%] md:bottom-7 lg:bottom-7 lg:h-[150%] xl:bottom-8 xl:h-[148%]"
                 }`}
               />
-              <BrandBadge className="absolute left-1/2 top-[50%] size-7 -translate-x-1/2 text-[8px] sm:top-[55%] sm:size-9 sm:text-[10px] md:top-[56%] md:size-10 lg:top-[54%] lg:size-8 lg:text-[9px] xl:top-[56%] xl:size-10 xl:text-[10px]" />
-              <span className="absolute bottom-2 left-1 right-1 text-center text-[9px] font-black leading-tight text-white drop-shadow sm:bottom-3 sm:left-2 sm:right-2 sm:text-[11px] md:text-xs lg:bottom-2 xl:text-[13px]">
+              <BrandBadge className="absolute left-1/2 top-[38%] size-7 -translate-x-1/2 text-[8px] sm:top-[42%] sm:size-8 sm:text-[9px] md:top-[44%] md:size-9 lg:top-[51%] lg:size-9 lg:text-[9px] xl:top-[52%] xl:size-10 xl:text-[10px]" />
+              <span className="absolute bottom-1.5 left-1 right-1 z-10 text-center text-[9px] font-black leading-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.35)] sm:bottom-2 sm:left-2 sm:right-2 sm:text-[11px] md:text-xs lg:bottom-3 lg:text-sm xl:bottom-4 xl:text-base">
                 {product.name}
               </span>
               <span className="sr-only">Select {product.name}</span>
